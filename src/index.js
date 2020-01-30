@@ -1,3 +1,20 @@
-const oDom = document.getElementById('root')
+const React = {
+    createElement(tag, attrs, ...children) {
+        return (
+            {
+                tag,
+                attrs,
+                children
+            }
+        )
+    }
+}
 
-oDom.append('111')
+const ele = (
+    <div className='wrap' title='detail'>
+        tangji
+        <span>tangji children</span>
+    </div>
+)
+
+console.log(ele);
