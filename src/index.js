@@ -1,14 +1,4 @@
-const React = {
-    createElement(tag, attrs, ...children) {
-        return (
-            {
-                tag,
-                attrs,
-                children
-            }
-        )
-    }
-}
+import React from './react'
 
 const ele = (
     <div className='wrap' title='detail'>
