@@ -23,3 +23,45 @@
 再然后就是最重要的两个模块——`module`(文件解析)和`plugins`(插件)，`webpack`默认只能解析`js`文件，但我们开发项目肯定不会单指一个文件，比如还有`.css .less .sass .jpag .png`甚至是`.vue`，这时候就需要根据匹配规则来使用对应的`loader`解析文件，一起打包输出。还有就是`plugins`，拿`mini-css-extract-plugin`举例，`loader`只能解析文件，比如`style-loader`他能把`.css`文件解析后形成一个`style`标签放在最终的`html`中，而插件能把打包后的文件直接不同形成`.css`，然后通过`link`标签引入，这就很大程度优化了首屏加载时间。不同插件也有不同的功能，我在`prod`文件中也引入了一个叫`clean-webpack-plugin`的插件，作用就是把每次`build`的目录清空再生成
 
 我觉得学习`webpack`配置比较好的方式是多学习大型项目的`cli`，比如`create-react-app`、`vue-cli`，或者热门的开源项目，像我之前学的`vue-element-admin`中的配置。不过，要提醒自己的是，先求稳再创优
+
+## 1.2 babel配置
+
+安装依赖
+
+> @babel/core @babel/preset-react @babel/polyfill babel-loader
+
+`@`是`babel 7.0+`的特性，本项目是react，所以直接安装了`@babel/preset-react`预设，别忘了`@babel/core`，不管是哪种预设，`@babel/core`是少不了的，它提供了`babel`转化的核心代码。
+
+`babel-loader`会读取更目录下`.babelrc`的配置内容，配置都比较简单，这里就直接贴代码了
+
+```js
+// webpack.config.base.js
+
+{
+    test: /\.(js|jsx)$/,
+    exclude: /node_modules/,
+    use: {
+        loader: 'babel-loader',
+        options: {
+            presets: ['@babel/preset-react']
+        }
+    }
+}
+```
+
+`.babelrc`内容
+
+```js
+{
+    "presets": [
+        [
+            "@babel/preset-react",
+            {
+                "useBuiltIns": "usage",
+                "corejs": 2
+            }
+        ]
+    ]
+}
+```
+前面在`webpack`配置提到了，如果你希望自动使用`@babel/polyfill`，你是可以在options中把`useBuiltIns`的值设为`usage`，然后指定`corejs`版本，一般是2。注意，因为我们需要把`@babel/polyfill`引入到打包文件的顶部，所以，它应该是`dependencies`，而不是`devDependencies`
