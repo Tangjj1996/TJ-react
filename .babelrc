@@ -3,7 +3,8 @@
         [
             "@babel/preset-react",
             {
-                "useBuiltIns": true
+                "useBuiltIns": "usage",
+                "corejs": 2
             }
         ]
     ]
